@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket');
 
 module.exports = {
     index,
@@ -15,13 +16,23 @@ function index(req, res) {
 
 function show(req, res) {
     Flight.findById(req.params.id, function(err, flight) {
-        res.render("movies/show", {title: "Flight Detail", flight});
+        Ticket.find({flight: flight._id}, function(err, tickets){
+            res.render("flights/show", {title: "Flight Detail", flight, tickets});
+        });
    });
 }
 
 function newFlight(req, res) {
-    res.render('flights/new', {title: "Add Flight"});
+    const newFlight = new Flight();
+    // Obtain the default date
+    const dt = newFlight.departs;
+    // Format the date for the value attribute of the input
+    let departsDate = `${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}`;
+    departsDate += `-${dt.getDate().toString().padStart(2, '0')}T${dt.toTimeString().slice(0, 5)}`;
+    res.render('flights/new', {title: "Add Flight", departsDate });
+
 }
+
 
 function create(req, res) {
     // remove any whitespace at start and end of airline 
@@ -33,7 +44,6 @@ function create(req, res) {
         // refreshes blank page if theres an error
         if(err) return res.redirect('/flights/new');
         console.log(flight);
-        res.redirect('/flights')
-    })
-
+        res.redirect(`/flights/${flight._id}`)
+    });
 }

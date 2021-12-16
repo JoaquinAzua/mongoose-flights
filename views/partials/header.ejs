@@ -8,9 +8,9 @@
 </head>
 <body>
   <nav>
-    <!-- <img src="/images/camera.svg"> -->
-    <a href="/flights/new" <%- title === 'New Flight' ? 'class="active"' : '' %>>Add Flight</a>
+    <a href="/flights/new" <%- title === 'Add Flight' ? 'class="active"' : '' %>>Add Flight</a>
     <a href="/flights" <%- title === 'All Flights' ? 'class="active"' : '' %>>All Flights</a>
+    <a href="/flights/<%= %>/tickets/new" <%- title === 'New Ticket' ? 'class="active"' : '' %>>Add Ticket</a>
   </nav>
   <main>
     <h1><%= title %></h1>
